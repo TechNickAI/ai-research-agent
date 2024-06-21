@@ -2,7 +2,6 @@
 # Whether to enable telemetry (default: true). No personal data is collected.
 enable_telemetry = true
 
-
 # List of environment variables to be provided by each user to use the app.
 user_env = []
 
@@ -57,7 +56,7 @@ name = "XOAI 💙"
 description = "Hugs and kisses with AI"
 
 # Large size content are by default collapsed for a cleaner ui
-default_collapse_content = true
+default_collapse_content = false
 
 # Hide the chain of thought details from the user in the UI.
 hide_cot = false
@@ -85,8 +84,8 @@ github = "https://github.com/TechNickAI/ai-research-agent"
 # custom_build = "./public/build"
 
 [UI.theme]
-default = "dark"
-#layout = "wide"
+default = "light"
+layout = "wide"
 #font_family = "Inter, sans-serif"
 # Override default MUI light theme. (Check theme.ts)
 [UI.theme.light]
