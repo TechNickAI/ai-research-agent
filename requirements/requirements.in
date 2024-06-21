@@ -2,4 +2,5 @@ chainlit
 langchain
 langchain_community
 langchain-openai
+loguru
 openai

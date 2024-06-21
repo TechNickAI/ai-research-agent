@@ -116,6 +116,8 @@ lazify==0.4.0
     # via chainlit
 literalai==0.0.604
     # via chainlit
+loguru==0.7.2
+    # via -r requirements/requirements.in
 marshmallow==3.21.3
     # via dataclasses-json
 multidict==6.0.5
