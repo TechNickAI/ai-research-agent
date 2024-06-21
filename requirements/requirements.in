@@ -1,6 +1,5 @@
 chainlit
-langchain
-langchain_community
-langchain-openai
+langchain_anthropic
+langgraph
+langsmith
 loguru
-openai
