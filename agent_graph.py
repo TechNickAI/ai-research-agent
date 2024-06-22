@@ -1,5 +1,6 @@
 from langchain_anthropic import ChatAnthropic
 from langchain_community.tools.tavily_search import TavilySearchResults
+from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import StateGraph
 from langgraph.graph.message import add_messages
 from langgraph.prebuilt import ToolNode, tools_condition
@@ -29,6 +30,9 @@ def create_graph():
 
     graph_builder.add_node("chatbot", chatbot)
 
+    # Set up a memory saver
+    memory = MemorySaver()
+
     # Set up tools and add them to the graph
     tools = create_tools()
     llm_with_tools = llm.bind_tools(tools)
@@ -45,4 +49,4 @@ def create_graph():
     graph_builder.add_edge("tools", "chatbot")
     graph_builder.set_entry_point("chatbot")
 
-    return graph_builder.compile()
+    return graph_builder.compile(checkpointer=memory)

@@ -26,11 +26,13 @@ async def on_chat_start():
 async def on_message(message: cl.Message):
     graph = cl.user_session.get("graph")
 
+    config = {"configurable": {"thread_id": message.thread_id}}
+
     # Call the graph with the message content and stream the response
-    async for event in graph.astream_events({"messages": message.content}, version="v1"):
+    async for event in graph.astream_events({"messages": message.content}, version="v1", config=config):
         kind = event["event"]
         if kind == "on_chat_model_stream":
-            msg = cl.Message(content="", author="OXAI 💙")
+            msg = cl.Message(content="")
 
             chunk = event["data"]["chunk"]
             if isinstance(chunk.content, str):
