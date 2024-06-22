@@ -1,5 +1,6 @@
 chainlit
 langchain_anthropic
+langchain_community
 langgraph
 langsmith
 loguru
