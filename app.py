@@ -3,12 +3,25 @@ from loguru import logger
 import chainlit as cl
 
 
+# Login with Google
+@cl.oauth_callback
+def oauth_callback(
+    provider_id: str,
+    token: str,
+    raw_user_data: dict[str, str],
+    default_user: cl.User,
+) -> cl.User | None:
+    return default_user
+
+
+# Set up the chat
 @cl.on_chat_start
 async def on_chat_start():
     graph = create_graph()
     cl.user_session.set("graph", graph)
 
 
+# Handle messages
 @cl.on_message
 async def on_message(message: cl.Message):
     graph = cl.user_session.get("graph")
