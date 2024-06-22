@@ -3,3 +3,4 @@ langchain_anthropic
 langgraph
 langsmith
 loguru
+tavily-python
