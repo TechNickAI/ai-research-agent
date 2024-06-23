@@ -1,5 +1,6 @@
 from agent_graph import create_graph
-from loguru import logger
+from chainlit.input_widget import Select, Slider
+from langchain.schema.runnable.config import RunnableConfig
 import chainlit as cl
 
 
@@ -17,38 +18,52 @@ def oauth_callback(
 # Set up the chat
 @cl.on_chat_start
 async def on_chat_start():
-    graph = create_graph()
+    settings = await cl.ChatSettings(
+        [
+            Select(
+                id="llm_provider",
+                label="Language Model:",
+                items={"OpenAI (GPT4o)": "openai", "Anthropic (Claude 3.5)": "anthropic"},
+                initial_value="openai",
+            ),
+            Slider(
+                id="temperature",
+                label="Temperature:",
+                initial=0.7,
+                max=2,
+                step=0.1,
+                description="Higher setting will generate more random responses",
+            ),
+        ]
+    ).send()
+    cl.user_session.set("settings", settings)
+
+    graph = create_graph(settings)
+    cl.user_session.set("graph", graph)
+
+
+@cl.on_settings_update
+def on_settings_update(settings):
+    cl.user_session.set("settings", settings)
+
+    # Rebuild the graph
+    graph = create_graph(settings)
     cl.user_session.set("graph", graph)
 
 
 # Handle messages
 @cl.on_message
 async def on_message(message: cl.Message):
-    graph = cl.user_session.get("graph")
+    runnable = cl.user_session.get("graph")  # type: Runnable
 
-    config = {"configurable": {"thread_id": message.thread_id}}
+    msg = cl.Message(content="")
 
-    # Call the graph with the message content and stream the response
-    async for event in graph.astream_events({"messages": message.content}, version="v1", config=config):
-        kind = event["event"]
-        if kind == "on_chat_model_stream":
-            msg = cl.Message(content="")
+    config = RunnableConfig(
+        callbacks=[cl.LangchainCallbackHandler(stream_final_answer=True)], configurable={"thread_id": message.thread_id}
+    )
 
-            chunk = event["data"]["chunk"]
-            if isinstance(chunk.content, str):
-                # Handle direct response
-                await msg.stream_token(chunk.content)
-            elif isinstance(chunk.content, list):
-                # Handle tool call
-                for item in chunk.content:
-                    if item["type"] == "text":
-                        await msg.stream_token(item["text"])
-                    elif item["type"] == "tool_use":
-                        # Process tool call (e.g., log it, call a function, etc.)
-                        msg = cl.Message(content="", author=item["name"], type="tool")
-                        tool_name = item["name"]
-                        tool_args = item["input"]
-                        # Example: log the tool call
-                        logger.info(f"Tool call: {tool_name} with args {tool_args}")
+    async for event in runnable.astream_events({"messages": message.content}, config=config, version="v1"):
+        if event["event"] == "on_chat_model_stream":
+            await msg.stream_token(event["data"]["chunk"].content)
 
     await msg.send()
