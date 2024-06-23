@@ -36,10 +36,6 @@ def create_graph(settings):
     llm = get_llm(settings["llm_provider"], temperature=settings["temperature"])
     # Set up a memory saver
     memory = MemorySaver()
-    if settings["llm_provider"] == "openai":
-        tools = create_tools()
-    else:
-        # Anthropic/Chainlit fails with tools
-        tools = []
+    tools = create_tools()
 
     return create_react_agent(model=llm, tools=tools, checkpointer=memory, messages_modifier=our_prompt)
