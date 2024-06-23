@@ -34,7 +34,7 @@ certifi==2024.6.2
     #   httpcore
     #   httpx
     #   requests
-chainlit==1.1.302
+chainlit==1.1.304
     # via -r requirements/requirements.in
 charset-normalizer==3.3.2
     # via requests
@@ -59,7 +59,7 @@ distro==1.9.0
     # via anthropic
 fastapi==0.110.3
     # via chainlit
-filelock==3.15.3
+filelock==3.15.4
     # via huggingface-hub
 filetype==1.2.0
     # via chainlit
@@ -104,7 +104,9 @@ jsonpatch==1.33
 jsonpointer==3.0.0
     # via jsonpatch
 langchain==0.2.5
-    # via langchain-community
+    # via
+    #   -r requirements/requirements.in
+    #   langchain-community
 langchain-anthropic==0.1.15
     # via -r requirements/requirements.in
 langchain-community==0.2.5
@@ -118,7 +120,7 @@ langchain-core==0.2.9
     #   langgraph
 langchain-text-splitters==0.2.1
     # via langchain
-langgraph==0.0.69
+langgraph==0.1.1
     # via -r requirements/requirements.in
 langsmith==0.1.81
     # via
