@@ -76,6 +76,8 @@ googleapis-common-protos==1.63.1
     # via
     #   opentelemetry-exporter-otlp-proto-grpc
     #   opentelemetry-exporter-otlp-proto-http
+greenlet==3.0.3
+    # via sqlalchemy
 grpcio==1.64.1
     # via opentelemetry-exporter-otlp-proto-grpc
 h11==0.14.0
@@ -107,15 +109,15 @@ jsonpatch==1.33
     # via langchain-core
 jsonpointer==3.0.0
     # via jsonpatch
-langchain==0.2.5
+langchain==0.2.6
     # via
     #   -r requirements/requirements.in
     #   langchain-community
 langchain-anthropic==0.1.15
     # via -r requirements/requirements.in
-langchain-community==0.2.5
+langchain-community==0.2.6
     # via -r requirements/requirements.in
-langchain-core==0.2.9
+langchain-core==0.2.10
     # via
     #   langchain
     #   langchain-anthropic
