@@ -76,6 +76,8 @@ googleapis-common-protos==1.63.1
     # via
     #   opentelemetry-exporter-otlp-proto-grpc
     #   opentelemetry-exporter-otlp-proto-http
+greenlet==3.0.3
+    # via sqlalchemy
 grpcio==1.64.1
     # via opentelemetry-exporter-otlp-proto-grpc
 h11==0.14.0
@@ -129,7 +131,7 @@ langchain-text-splitters==0.2.1
     # via langchain
 langgraph==0.1.1
     # via -r requirements/requirements.in
-langsmith==0.1.81
+langsmith==0.1.82
     # via
     #   -r requirements/requirements.in
     #   langchain
